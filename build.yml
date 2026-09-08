@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Install & build (Next.js 14)
+    runs-on: ubuntu-latest
+
+    # These are NOT secrets. They're placeholder values only used so the
+    # Supabase browser client can be constructed while Next.js statically
+    # shells out pages during `next build`. No network call to Supabase
+    # happens during the build (every screen fetches data client-side at
+    # runtime, not during build/prerender), so a syntactically valid but
+    # fake URL + key is sufficient. Never put SUPABASE_SERVICE_ROLE_KEY,
+    # a database password, or any real secret here or in any repo variable
+    # prefixed NEXT_PUBLIC_.
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder-project.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key-not-a-real-secret
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build (Next.js compile + TypeScript type-check + Tailwind)
+        run: npm run build

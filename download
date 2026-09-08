@@ -1,0 +1,22 @@
+# dependencies
+/node_modules
+
+# next.js build output
+/.next/
+/out/
+
+# next.js auto-generated type file
+next-env.d.ts
+
+# production
+/build
+
+# env files — never commit real credentials
+.env
+.env*.local
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+.vercel
